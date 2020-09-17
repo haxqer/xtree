@@ -35,8 +35,7 @@ type node struct {
 
 func (n *node) FindLastNode() Tree {
 	ns := n.Nodes
-	n = ns[len(ns)-1]
-	return n
+	return ns[len(ns)-1]
 }
 
 func (n *node) AddNode(v Value) Tree {

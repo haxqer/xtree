@@ -2,7 +2,6 @@ package hierarchy
 
 import (
 	"fmt"
-	"github.com/haxqer/xtree"
 	"reflect"
 	"strings"
 )
@@ -87,7 +86,7 @@ func nameTree(tree Tree, v interface{}) error {
 		field := typ.Field(i)
 		fieldValue := val.Field(i)
 		name, skip, omit := getMeta(field.Name, field.Tag)
-		if skip || omit && xtree.isEmpty(&fieldValue) {
+		if skip || omit && isEmpty(&fieldValue) {
 			continue
 		}
 		typ, val, isStruct := getValue(field.Type, &fieldValue)
@@ -109,7 +108,7 @@ func nameTree(tree Tree, v interface{}) error {
 
 func getMeta(fieldName string, tag reflect.StructTag) (name string, skip, omit bool) {
 	if tagStr := tag.Get("tree"); len(tagStr) > 0 {
-		name, omit = xtree.tagSpec(tagStr)
+		name, omit = tagSpec(tagStr)
 	}
 	if name == "-" {
 		return fieldName, true, omit
@@ -132,7 +131,7 @@ func valueTree(tree Tree, v interface{}) error {
 		field := typ.Field(i)
 		fieldValue := val.Field(i)
 		name, skip, omit := getMeta(field.Name, field.Tag)
-		if skip || omit && xtree.isEmpty(&fieldValue) {
+		if skip || omit && isEmpty(&fieldValue) {
 			continue
 		}
 		typ, val, isStruct := getValue(field.Type, &fieldValue)
@@ -162,10 +161,10 @@ func tagTree(tree Tree, v interface{}) error {
 		field := typ.Field(i)
 		fieldValue := val.Field(i)
 		name, skip, omit := getMeta(field.Name, field.Tag)
-		if skip || omit && xtree.isEmpty(&fieldValue) {
+		if skip || omit && isEmpty(&fieldValue) {
 			continue
 		}
-		filteredTag := xtree.filterTags(field.Tag)
+		filteredTag := filterTags(field.Tag)
 		typ, val, isStruct := getValue(field.Type, &fieldValue)
 		if !isStruct {
 			tree.AddMetaNode(filteredTag, name)
@@ -193,7 +192,7 @@ func typeTree(tree Tree, v interface{}) error {
 		field := typ.Field(i)
 		fieldValue := val.Field(i)
 		name, skip, omit := getMeta(field.Name, field.Tag)
-		if skip || omit && xtree.isEmpty(&fieldValue) {
+		if skip || omit && isEmpty(&fieldValue) {
 			continue
 		}
 		typ, val, isStruct := getValue(field.Type, &fieldValue)
@@ -224,7 +223,7 @@ func typeSizeTree(tree Tree, v interface{}) error {
 		field := typ.Field(i)
 		fieldValue := val.Field(i)
 		name, skip, omit := getMeta(field.Name, field.Tag)
-		if skip || omit && xtree.isEmpty(&fieldValue) {
+		if skip || omit && isEmpty(&fieldValue) {
 			continue
 		}
 		typ, val, isStruct := getValue(field.Type, &fieldValue)
@@ -255,7 +254,7 @@ func metaTree(tree Tree, v interface{}, fmtFunc FmtFunc) error {
 		field := typ.Field(i)
 		fieldValue := val.Field(i)
 		name, skip, omit := getMeta(field.Name, field.Tag)
-		if skip || omit && xtree.isEmpty(&fieldValue) {
+		if skip || omit && isEmpty(&fieldValue) {
 			continue
 		}
 		typ, val, isStruct := getValue(field.Type, &fieldValue)
